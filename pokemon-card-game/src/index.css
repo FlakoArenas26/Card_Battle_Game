@@ -2,7 +2,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
+  background-color: #ebe8e8d0;
 }
 
 .App {
@@ -47,7 +47,7 @@ body {
 }
 
 .card-back {
-  background-color: #ccc;
+  background-color: #cccccc54;
 }
 
 .card-content {

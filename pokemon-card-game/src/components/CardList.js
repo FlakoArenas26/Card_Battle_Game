@@ -25,7 +25,7 @@ const Card = ({ card, isLast }) => {
           </div>
         </div>
       ) : (
-        <div className="card-back">Carta Boca Abajo</div>
+        <div className="card-back">Cartas</div>
       )}
     </div>
   );

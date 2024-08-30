@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'URL_DE_TU_API';
+const API_URL = 'http://localhost:3001/api/pokemons';
 
 export const fetchCards = async () => {
   try {

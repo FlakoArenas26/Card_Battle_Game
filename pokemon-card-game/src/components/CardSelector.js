@@ -11,7 +11,7 @@ const CardSelector = ({ onCardSelect }) => {
   };
 
   return (
-    <button onClick={handleSelect}>Enviar Última Tarjeta</button>
+    <button onClick={handleSelect}>Enviar Pokemón</button>
   );
 };
 
