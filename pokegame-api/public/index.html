@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokemon Card Game</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .card { border: 1px solid #ddd; padding: 20px; margin: 20px; width: 250px; display: inline-block; vertical-align: top; }
+    img { width: 100px; height: 100px; }
+    .stats { margin-top: 10px; }
+    .stat { margin-bottom: 5px; }
+    .compare-btn { margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Pokemon Card Game</h1>
+  <div id="pokemon-cards"></div>
+
+  <script>
+    async function fetchAllPokemons() {
+      const response = await fetch('/api/pokemons');
+      const data = await response.json();
+      return data.results; // La respuesta tiene una propiedad 'results' con la lista de Pokémon
+    }
+
+    async function displayAllPokemons() {
+      const pokemons = await fetchAllPokemons();
+      const container = document.getElementById('pokemon-cards');
+      container.innerHTML = ''; // Limpiar contenedor antes de añadir nuevas tarjetas
+
+      // Agregar una lista para selección de Pokémon para comparación
+      const compareContainer = document.createElement('div');
+      compareContainer.id = 'compare-container';
+      container.appendChild(compareContainer);
+
+      pokemons.forEach(async (pokemon) => {
+        const pokemonDetails = await fetch(`/api/pokemon/${pokemon.name}`);
+        const data = await pokemonDetails.json();
+        const card = document.createElement('div');
+        card.classList.add('card');
+        
+        // Crear la tarjeta con habilidades y estadísticas
+        card.innerHTML = `
+          <h2>${data.name}</h2>
+          <img src="${data.sprites.front_default}" alt="${data.name}" />
+          <div class="stats">
+            <h3>Stats</h3>
+            ${data.stats.map(stat => `
+              <div class="stat">
+                ${stat.stat.name}: ${stat.base_stat}
+              </div>
+            `).join('')}
+          </div>
+          <div class="stats">
+            <h3>Abilities</h3>
+            ${data.abilities.map(ability => `
+              <div class="stat">
+                ${ability.ability.name}
+              </div>
+            `).join('')}
+          </div>
+          <button class="compare-btn" onclick="selectPokemon('${data.name}')">Compare</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Manejo de comparación de Pokémon
+    let selectedPokemons = [];
+
+    function selectPokemon(name) {
+      if (selectedPokemons.length < 2) {
+        selectedPokemons.push(name);
+        alert(`Selected ${name}. You can select ${2 - selectedPokemons.length} more Pokémon.`);
+      }
+      if (selectedPokemons.length === 2) {
+        comparePokemons();
+      }
+    }
+
+    function comparePokemons() {
+      // Comparar los dos Pokémon seleccionados
+      alert(`Comparing ${selectedPokemons[0]} and ${selectedPokemons[1]}`);
+      // Aquí puedes implementar la lógica de comparación y mostrar el resultado
+    }
+
+    // Mostrar todos los Pokémon
+    displayAllPokemons();
+  </script>
+</body>
+</html>
